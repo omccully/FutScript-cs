@@ -41,12 +41,11 @@ namespace FutScriptFunctions.Screen
 
                     if (checker(pix))
                     {
-                        bmp.Dispose();
                         return new Point(x, y);
                     }
                 }
             }
-            bmp.Dispose();
+
             return new Point(-1, -1); // color not found
         }
 
@@ -58,10 +57,10 @@ namespace FutScriptFunctions.Screen
         /// <returns></returns>
         public static bool ScreenAreaIncludesColor(Rectangle screen_area, ColorChecker checker)
         {
-            Bitmap bmp = ScreenCapture.CaptureScreenArea(screen_area);
-            bool ret = bmp.IncludesColor(checker);
-            bmp.Dispose();
-            return ret;
+            using (Bitmap bmp = ScreenCapture.CaptureScreenArea(screen_area))
+            {
+                return bmp.IncludesColor(checker);
+            } // implicit bmp.Dispose()
         }
 
         /// <summary>
@@ -72,19 +71,19 @@ namespace FutScriptFunctions.Screen
         /// <returns></returns>
         public static Point LocationOfColorWithinScreenArea(Rectangle screen_area, ColorChecker checker)
         {
-            Bitmap bmp = ScreenCapture.CaptureScreenArea(screen_area);
+            using (Bitmap bmp = ScreenCapture.CaptureScreenArea(screen_area))
+            {
+                // get location of color relative to start Point
+                Point loc = bmp.LocationOfColor(checker);
 
-            // get location of color relative to start Point
-            Point loc = bmp.LocationOfColor(checker);
+                if (loc.X == -1 && loc.Y == -1) return loc; // not found
 
-            if (loc.X == -1 && loc.Y == -1) return loc; // not found
+                // adjust location so location refers to the absolute screen coords
+                loc.X += screen_area.X;
+                loc.Y += screen_area.Y;
 
-            // adjust location so location refers to the absolute screen coords
-            loc.X += screen_area.X;
-            loc.Y += screen_area.Y;
-
-            bmp.Dispose();
-            return loc;
+                return loc;
+            } // implicit bmp.Dispose()
         }
 
         /// <summary>
@@ -140,57 +139,71 @@ namespace FutScriptFunctions.Screen
         public static bool WaitForAreaChange(Rectangle screen_area, int pixelreq, int timeout_ms = 0, ColorComparer comparer = null)
         {
             if (comparer == null) comparer = ColorCompare.Strict;
-            int pixelfound = 0;
+            
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            Bitmap bmp = ScreenCapture.CaptureScreenArea(screen_area);
-            Color pix;
-
-            Bitmap checkbmp;
-            Color checkpix;
-
-            while (true)
+            using (Bitmap original_bmp = ScreenCapture.CaptureScreenArea(screen_area))
             {
-                checkbmp = ScreenCapture.CaptureScreenArea(screen_area);
-                for (int y = 0; y <= bmp.Height; y++)
+                while (true)
                 {
-                    for (int x = 0; x <= bmp.Width; x++)
+                    using (Bitmap latest_bmp = ScreenCapture.CaptureScreenArea(screen_area))
                     {
-                        pix = bmp.GetPixel(x, y); // original pixel
-                        checkpix = checkbmp.GetPixel(x, y); // current pixel
-
-                        if (!comparer(pix, checkpix))
+                        if (BitmapsHaveNumberOfPixelsDifferent(original_bmp, latest_bmp, pixelreq, comparer))
                         {
-                            // this pixel is different from the original
-                            pixelfound++;
-                            if (pixelfound >= pixelreq)
-                            {
-                                // success! enough pixel changes were found.
-                                checkbmp.Dispose();
-                                bmp.Dispose();
-                                return true;
-                            }
+                            // success! enough pixel changes were found.
+                            return true;
                         }
 
                         if (timeout_ms != 0 && stopwatch.ElapsedMilliseconds >= timeout_ms)
                         {
                             // timed out
-                            checkbmp.Dispose();
-                            bmp.Dispose();
                             return false;
                         }
-                    }
-                    Thread.Sleep(1);
+
+                        Thread.Sleep(100);
+                    }  
                 }
+            }  
+        }
 
-                // pixelfound count resets for each screenshot tested
-                pixelfound = 0;
-
-                checkbmp.Dispose();
-
-                Thread.Sleep(30);
+        /// <summary>
+        /// Checks if two images have at least <paramref name="PixelRequirement"/> number of pixels
+        /// that are different based on <paramref name="comparer"/>
+        /// </summary>
+        /// <param name="image_a"></param>
+        /// <param name="image_b"></param>
+        /// <param name="PixelRequirement"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        private static bool BitmapsHaveNumberOfPixelsDifferent(Bitmap image_a, Bitmap image_b, int PixelRequirement, ColorComparer comparer = null)
+        {
+            if (image_a.Size != image_b.Size)
+            {
+                throw new ArgumentException("image_a and image_b must be the same size.");
             }
+
+            int different_pixels_found = 0;
+
+            for (int y = 0; y <= image_a.Height; y++)
+            {
+                for (int x = 0; x <= image_a.Width; x++)
+                {
+                    // check if latest (x,y) pixel is "different" from the original
+                    if (!comparer(image_a.GetPixel(x, y), image_b.GetPixel(x, y)))
+                    {
+                        // this pixel is different from the original
+                        different_pixels_found++;
+                        if (different_pixels_found >= PixelRequirement)
+                        {
+                            // success! enough pixel changes were found.
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
