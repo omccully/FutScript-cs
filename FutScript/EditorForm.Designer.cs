@@ -65,20 +65,21 @@
             this.MousePollTextBox = new System.Windows.Forms.TextBox();
             this.KeyboardPollTextBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.ScriptStatusLabel = new System.Windows.Forms.Label();
             this.RecordMouseMovementsButton = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.TypingSpeedTextBox = new System.Windows.Forms.TextBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.ColorPic)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ScriptBox
             // 
-            this.ScriptBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.ScriptBox.Location = new System.Drawing.Point(0, 24);
             this.ScriptBox.Name = "ScriptBox";
-            this.ScriptBox.Size = new System.Drawing.Size(352, 473);
+            this.ScriptBox.Size = new System.Drawing.Size(352, 448);
             this.ScriptBox.TabIndex = 0;
             this.ScriptBox.Text = "move(200,200)\nwait(500)\nmove(800,700)\nwait(100)";
             this.ScriptBox.TextChanged += new System.EventHandler(this.ScriptBox_TextChanged);
@@ -278,7 +279,7 @@
             // 
             this.StartScriptButton.Location = new System.Drawing.Point(373, 409);
             this.StartScriptButton.Name = "StartScriptButton";
-            this.StartScriptButton.Size = new System.Drawing.Size(170, 65);
+            this.StartScriptButton.Size = new System.Drawing.Size(170, 63);
             this.StartScriptButton.TabIndex = 57;
             this.StartScriptButton.Text = "Start Script (F3)";
             this.StartScriptButton.UseVisualStyleBackColor = true;
@@ -408,14 +409,6 @@
             this.label8.TabIndex = 58;
             this.label8.Text = "Keybd Poll (Hz)";
             // 
-            // ScriptStatusLabel
-            // 
-            this.ScriptStatusLabel.AutoSize = true;
-            this.ScriptStatusLabel.Location = new System.Drawing.Point(390, 477);
-            this.ScriptStatusLabel.Name = "ScriptStatusLabel";
-            this.ScriptStatusLabel.Size = new System.Drawing.Size(0, 13);
-            this.ScriptStatusLabel.TabIndex = 66;
-            // 
             // RecordMouseMovementsButton
             // 
             this.RecordMouseMovementsButton.Location = new System.Drawing.Point(375, 224);
@@ -443,13 +436,30 @@
             this.TypingSpeedTextBox.TabIndex = 59;
             this.TypingSpeedTextBox.TextChanged += new System.EventHandler(this.TypingSpeedTextBox_TextChanged);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 475);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(557, 22);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.TabIndex = 68;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(59, 17);
+            this.toolStripStatusLabel1.Text = "Launched";
+            // 
             // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(557, 497);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.RecordMouseMovementsButton);
-            this.Controls.Add(this.ScriptStatusLabel);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.MouseFunctionComboBox);
@@ -492,6 +502,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.ColorPic)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -536,10 +548,11 @@
         private System.Windows.Forms.TextBox MousePollTextBox;
         private System.Windows.Forms.TextBox KeyboardPollTextBox;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label ScriptStatusLabel;
         private System.Windows.Forms.Button RecordMouseMovementsButton;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox TypingSpeedTextBox;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 

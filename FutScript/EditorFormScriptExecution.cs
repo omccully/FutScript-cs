@@ -73,9 +73,10 @@ namespace FutScript
 
         private void Script_LoopFinished(object sender, LoopFinishedEventArgs e)
         {
+            string status = $"Loop #{e.LoopCount}, {Math.Round(e.TimeElapsed.TotalSeconds, 3)} seconds";
             ThreadSafeInvoke(delegate ()
             {
-                ScriptStatusLabel.Text = $"Loop #{e.LoopCount}, {Math.Round(e.TimeElapsed.TotalSeconds, 3)} seconds";
+                toolStripStatusLabel1.Text = status;
             });
         }
     }
