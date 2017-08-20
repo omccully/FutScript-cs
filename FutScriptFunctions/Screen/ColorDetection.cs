@@ -5,6 +5,8 @@ using System.Threading;
 
 namespace FutScriptFunctions.Screen
 {
+    // TODO: make code generator to generate method overloads for 
+    // methods that accept Point or Rectangle objects for coordinates.
     public static class ColorDetection
     {
         /// <summary>

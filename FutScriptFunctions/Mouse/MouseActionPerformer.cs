@@ -10,8 +10,6 @@ using FutScriptFunctions.Screen;
 
 namespace FutScriptFunctions.Mouse
 {
-    // TODO: make code generator to generate method overloads for 
-    // methods that accept Point or Rectangle objects for coordinates.
     public class MouseActionPerformer
     {
         public enum MovementFunctions
