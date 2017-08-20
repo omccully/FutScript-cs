@@ -20,7 +20,6 @@ namespace FutScript
     public partial class EditorForm : Form
     {
         HotKeyManager HotKeyMngr = new HotKeyManager();
-        Thread UpdateCoordsThread { get; set; }
 
         const string OptionsFilePath = "options.txt";
         const string PathsFilePath = "paths.json";
