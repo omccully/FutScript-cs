@@ -34,14 +34,11 @@ namespace FutScriptFunctions.Screen
             // grouped together on a computer screen.
             // Be careful to ensure that all coordinates are checked (do proper testing on this).
 
-            Color pix;
             for (int y = 0; y <= bmp.Height; y++)
             {
                 for (int x = 0; x <= bmp.Width; x++)
                 {
-                    pix = bmp.GetPixel(x, y);
-
-                    if (checker(pix))
+                    if (checker(bmp.GetPixel(x, y)))
                     {
                         return new Point(x, y);
                     }
