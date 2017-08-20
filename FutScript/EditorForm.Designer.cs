@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.ScriptBox = new System.Windows.Forms.RichTextBox();
             this.XBox = new System.Windows.Forms.TextBox();
             this.YBox = new System.Windows.Forms.TextBox();
@@ -70,6 +71,7 @@
             this.TypingSpeedTextBox = new System.Windows.Forms.TextBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.CoordinateUpdateTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.ColorPic)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -453,6 +455,11 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(59, 17);
             this.toolStripStatusLabel1.Text = "Launched";
             // 
+            // CoordinateUpdateTimer
+            // 
+            this.CoordinateUpdateTimer.Interval = 30;
+            this.CoordinateUpdateTimer.Tick += new System.EventHandler(this.CoordinateUpdateTimer_Tick);
+            // 
             // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -553,6 +560,7 @@
         private System.Windows.Forms.TextBox TypingSpeedTextBox;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.Timer CoordinateUpdateTimer;
     }
 }
 

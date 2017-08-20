@@ -9,49 +9,31 @@ namespace FutScript
     {
         bool StopFindCoordsHotKeyPressed(KeyEventArgs kea)
         {
-            StopBut.PerformClick();
+            // stop timer to track mouse cursor
+            CoordinateUpdateTimer.Stop();
             return true;
         }
 
         private void FindBut_Click(object sender, EventArgs e)
         {
-            if (UpdateCoordsThread == null)
-            {
-                UpdateCoordsThread = new Thread(UpdateLoopThread);
-                UpdateCoordsThread.Start();
-            }
+            // start timer to track mouse cursor
+            CoordinateUpdateTimer.Start();
         }
 
         private void StopBut_Click(object sender, EventArgs e)
         {
-            if (UpdateCoordsThread != null)
-            {
-                UpdateCoordsThread.Abort();
-                UpdateCoordsThread = null;
-            }
+            // stop timer to track mouse cursor
+            CoordinateUpdateTimer.Stop();
         }
 
-        void UpdateLoopThread()
+        private void CoordinateUpdateTimer_Tick(object sender, EventArgs e)
         {
+            // interval occurred, find coords
             Point p = GetReferencePoint();
-
-            try
-            {
-                while (true)
-                {
-                    int x = MouseMover.Location.X - p.X;
-                    int y = MouseMover.Location.Y - p.Y;
-
-                    this.Invoke((MethodInvoker)delegate
-                    {
-                        XFind.Text = x.ToString();
-                        YFind.Text = y.ToString();
-                    });
-
-                    Thread.Sleep(30);
-                }
-            }
-            catch { }
+            int x = MouseMover.Location.X - p.X;
+            int y = MouseMover.Location.Y - p.Y;
+            XFind.Text = x.ToString();
+            YFind.Text = y.ToString();
         }
     }
 }
