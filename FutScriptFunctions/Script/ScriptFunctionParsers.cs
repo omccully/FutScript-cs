@@ -77,7 +77,7 @@ namespace FutScriptFunctions.Script
 
         }
 
-        [FunctionParserAttribute("execfile(file_path)")]
+        [FunctionParser("execfile(file_path)")]
         public FunctionCall execfile(string arg_txt)
         {
             return delegate ()
@@ -87,7 +87,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("hotkey(key,file_path)", "Keyboard")]
+        [FunctionParser("hotkey(key,file_path)", "Keyboard")]
         public FunctionCall hotkey(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -106,7 +106,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("ifcolor(x,y,color_rule,file_path)", "Screen")]
+        [FunctionParser("ifcolor(x,y,color_rule,file_path)", "Screen")]
         public FunctionCall ifcolor(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -128,7 +128,7 @@ namespace FutScriptFunctions.Script
 
         // ifarea(200:400, 400:600, 0ff0000, 
 
-        [FunctionParserAttribute("ifarea(x1,y1,x2,y2,color_rule,file_path)", "Screen")]
+        [FunctionParser("ifarea(x1,y1,x2,y2,color_rule,file_path)", "Screen")]
         public FunctionCall ifarea(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -151,7 +151,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("iftimer(time_seconds,file_path)")]
+        [FunctionParser("iftimer(time_seconds,file_path)")]
         public FunctionCall iftimer(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -168,7 +168,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("keydown(key_code)", "Keyboard")]
+        [FunctionParser("keydown(key_code)", "Keyboard")]
         public FunctionCall keydown(string arg_txt)
         {
             Keys key = ParseKey(arg_txt);
@@ -179,7 +179,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("keyup(key_code)", "Keyboard")]
+        [FunctionParser("keyup(key_code)", "Keyboard")]
         public FunctionCall keyup(string arg_txt)
         {
             Keys key = ParseKey(arg_txt);
@@ -190,7 +190,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("leftclick(time_ms)", "Mouse")]
+        [FunctionParser("leftclick(time_ms)", "Mouse")]
         public FunctionCall leftclick(string arg_txt)
         {
             Number rn = Number.Parse(arg_txt);
@@ -201,7 +201,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("leftclickat(x,y)", "Mouse")]
+        [FunctionParser("leftclickat(x,y)", "Mouse")]
         public FunctionCall leftclickat(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -215,7 +215,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("loop(number_of_repeats,file_path)")]
+        [FunctionParser("loop(number_of_repeats,file_path)")]
         public FunctionCall loop(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -233,7 +233,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("middleclick(time_ms)", "Mouse")]
+        [FunctionParser("middleclick(time_ms)", "Mouse")]
         public FunctionCall middleclick(string arg_txt)
         {
             Number rn = Number.Parse(arg_txt);
@@ -244,7 +244,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("move(x,y)", "Mouse")]
+        [FunctionParser("move(x,y)", "Mouse")]
         public FunctionCall move(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -259,7 +259,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("mover(x1,y1,x2,y2)", "Mouse")]
+        [FunctionParser("mover(x1,y1,x2,y2)", "Mouse")]
         public FunctionCall mover(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -278,7 +278,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("movefrom(x,y)", "Mouse")]
+        [FunctionParser("movefrom(x,y)", "Mouse")]
         public FunctionCall movefrom(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -292,7 +292,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("movetocolor(x1,y1,x2,y2,color_rule[,timeout_ms[,file_path]])", "Mouse")]
+        [FunctionParser("movetocolor(x1,y1,x2,y2,color_rule[,timeout_ms[,file_path]])", "Mouse")]
         public FunctionCall movetocolor(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -330,7 +330,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("process_start(file_path)")]
+        [FunctionParser("process_start(file_path)")]
         public FunctionCall process_start(string arg_txt)
         {
             return delegate ()
@@ -340,7 +340,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("process_stop(process)")]
+        [FunctionParser("process_stop(process)")]
         public FunctionCall process_stop(string arg_txt)
         {
             return delegate ()
@@ -350,7 +350,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("playsound(sound_file)")]
+        [FunctionParser("playsound(sound_file)")]
         public FunctionCall playsound(string arg_txt)
         {
             return delegate ()
@@ -360,7 +360,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("sendkeys(keys)", "Keyboard")]
+        [FunctionParser("sendkeys(keys)", "Keyboard")]
         public FunctionCall sendkeys(string arg_txt)
         {
             return delegate ()
@@ -370,7 +370,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("randomexec(percent,file_path)")]
+        [FunctionParser("randomexec(percent,file_path)")]
         public FunctionCall randomexec(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -387,7 +387,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("resettimer()")]
+        [FunctionParser("resettimer()")]
         public FunctionCall resettimer(string arg_txt)
         {
             return delegate ()
@@ -397,7 +397,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("rightclick(time_ms)", "Mouse")]
+        [FunctionParser("rightclick(time_ms)", "Mouse")]
         public FunctionCall rightclick(string arg_txt)
         {
             Number rn = Number.Parse(arg_txt);
@@ -408,7 +408,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("rightclickat(x,y)", "Mouse")]
+        [FunctionParser("rightclickat(x,y)", "Mouse")]
         public FunctionCall rightclickat(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -423,7 +423,7 @@ namespace FutScriptFunctions.Script
         }
 
 
-        [FunctionParserAttribute("savescreen()", "Screen")]
+        [FunctionParser("savescreen()", "Screen")]
         public FunctionCall savescreen(string arg_txt)
         {
             return delegate ()
@@ -435,7 +435,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("savewindow()", "Screen")]
+        [FunctionParser("savewindow()", "Screen")]
         public FunctionCall savewindow(string arg_txt)
         {
             return delegate ()
@@ -447,7 +447,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("stopscript()")]
+        [FunctionParser("stopscript()")]
         public FunctionCall stopscript(string arg_txt)
         {
             return delegate ()
@@ -456,7 +456,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("type()", "Keyboard")]
+        [FunctionParser("type()", "Keyboard")]
         public FunctionCall type(string arg_txt)
         {
             return delegate ()
@@ -466,7 +466,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("wait(time_ms)")]
+        [FunctionParser("wait(time_ms)")]
         public FunctionCall wait(string arg_txt)
         {
             Number rn = Number.Parse(arg_txt);
@@ -477,7 +477,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("waitforarea(x1,y1,x2,y2,tolerance,pixelreq[,timeout_ms[,file_path]])", "Screen")]
+        [FunctionParser("waitforarea(x1,y1,x2,y2,tolerance,pixelreq[,timeout_ms[,file_path]])", "Screen")]
         public FunctionCall waitforarea(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
@@ -505,7 +505,7 @@ namespace FutScriptFunctions.Script
             };
         }
 
-        [FunctionParserAttribute("waitforpx(x,y,color_rule[,timeout_ms[,file_path]])", "Screen")]
+        [FunctionParser("waitforpx(x,y,color_rule[,timeout_ms[,file_path]])", "Screen")]
         public FunctionCall waitforpx(string arg_txt)
         {
             string[] args = arg_txt.Split(',');

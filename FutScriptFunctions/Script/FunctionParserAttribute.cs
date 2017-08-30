@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace FutScriptFunctions.Script
 {
-    public class FunctionParserAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Method)]
+    public sealed class FunctionParserAttribute : Attribute
     {
         public readonly string Signature;
         public readonly string Category;
