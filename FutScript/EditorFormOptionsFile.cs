@@ -2,6 +2,7 @@
 using System.IO;
 using System;
 using FutScriptFunctions.Mouse;
+using System.Diagnostics;
 
 namespace FutScript
 {
@@ -50,17 +51,21 @@ namespace FutScript
                             break;
                         case "mousefunc":
                             Type move_func_type = typeof(MouseActionPerformer.MovementFunctions);
-                            int i = 0;
-                            foreach (MouseActionPerformer.MovementFunctions move_func in
-                                Enum.GetValues(move_func_type))
+
+                            try
                             {
-                                if (Value == Enum.GetName(move_func_type, move_func))
-                                {
-                                    MouseFunctionComboBox.SelectedIndex = i;
-                                    break;
-                                }
-                                i++;
+                                MouseActionPerformer.MovementFunctions move_func = (MouseActionPerformer.MovementFunctions)Enum.Parse(move_func_type, Value);
+                                int index = Array.IndexOf(Enum.GetValues(move_func_type), move_func);
+
+                                // if move_func not found in enum somehow, use 0
+                                Debug.Assert(index != -1); // 
+                                MouseFunctionComboBox.SelectedIndex = index;
                             }
+                            catch(ArgumentException) // Enum.Parse fails
+                            {
+                                MessageBox.Show("The options file was corrupted. The mouse func option failed to load.");
+                            }
+
                             break;
                        
                     }

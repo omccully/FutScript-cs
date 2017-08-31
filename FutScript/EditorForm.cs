@@ -234,6 +234,7 @@ namespace FutScript
                 MouseActionPerformer.MovementFunctions move_func =
                 (MouseActionPerformer.MovementFunctions)MouseFunctionComboBox.SelectedValue;
 
+                // apply this mouse_func to all of the mouse movers
                 foreach (MouseActionPerformer mouse_mover in MouseMovers.Values)
                 {
                     mouse_mover.DefaultMovementFunction = move_func;
