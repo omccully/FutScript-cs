@@ -160,7 +160,7 @@ namespace FutScript
         {
             try
             {
-                script.MouseSpeed = Number.Parse(MouseSpeedTextBox.Text);
+                script.MouseSpeed = NumberGenerator.Parse(MouseSpeedTextBox.Text);
                 MouseSpeedTextBox.BackColor = InitialTextBoxColor;
             }
             catch
@@ -173,7 +173,7 @@ namespace FutScript
         {
             try
             {
-                script.TypingSpeed = Number.Parse(TypingSpeedTextBox.Text);
+                script.TypingSpeed = NumberGenerator.Parse(TypingSpeedTextBox.Text);
                 TypingSpeedTextBox.BackColor = InitialTextBoxColor;
             }
             catch
@@ -215,7 +215,7 @@ namespace FutScript
         {
             try
             {
-                script.StandardWait = Number.Parse(StandardWaitTextBox.Text);
+                script.StandardWait = NumberGenerator.Parse(StandardWaitTextBox.Text);
                 StandardWaitTextBox.BackColor = InitialTextBoxColor;
             }
             catch

@@ -22,11 +22,11 @@ namespace FutScriptFunctions.Script
         /// The average time to wait in milliseconds between each 
         /// script line execution
         /// </summary>
-        public Number StandardWait = new NormalDistributor(48, 11);
+        public NumberGenerator StandardWait = new NormalDistributor(48, 11);
 
-        public Number MouseSpeed = new NormalDistributor(383, 25);
+        public NumberGenerator MouseSpeed = new NormalDistributor(383, 25);
 
-        public Number TypingSpeed = new NormalDistributor(5.2, 2.3);
+        public NumberGenerator TypingSpeed = new NormalDistributor(5.2, 2.3);
 
         /// <summary>
         /// X reference that all coordinates are relative to

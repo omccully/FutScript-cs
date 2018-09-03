@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace FutScriptFunctions.Numbers
 {
-    public class RandomRange : Number
+    public class RandomRange : NumberGenerator
     {
         public double LowerLimit { get; private set; }
         public double UpperLimit { get; private set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FutScriptFunctions.Numbers
 {
-    public class StaticNumber : Number
+    public class StaticNumber : NumberGenerator
     {
         double Number;
 

@@ -11,7 +11,7 @@ namespace FutScriptFunctions.Numbers
     /// RandomNumber object represents a normal-distribution generator.
     /// Static methods provide static access to a shared 
     /// </summary>
-    public class NormalDistributor : Number
+    public class NormalDistributor : NumberGenerator
     {
         double mean;
         double std_dev;

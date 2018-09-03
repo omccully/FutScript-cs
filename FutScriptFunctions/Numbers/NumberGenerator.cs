@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace FutScriptFunctions.Numbers
 {
-    public abstract class Number
+    public abstract class NumberGenerator
     {
         abstract public int GetInt();
         abstract public double GetDouble();
 
-        public delegate Number Parser(string text);
+        public delegate NumberGenerator Parser(string text);
 
-        public static Number Parse(string text)
+        public static NumberGenerator Parse(string text)
         {
             Parser[] parsers = { // be careful of order here
                 StaticNumber.Parse,

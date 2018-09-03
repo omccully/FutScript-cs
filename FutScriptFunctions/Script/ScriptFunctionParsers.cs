@@ -155,7 +155,7 @@ namespace FutScriptFunctions.Script
         public FunctionCall iftimer(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
-            Number TimeSeconds = Number.Parse(args[0]);
+            NumberGenerator TimeSeconds = NumberGenerator.Parse(args[0]);
             string file_path = (args.Length > 1 ? args[1] : null);
 
             return delegate ()
@@ -193,7 +193,7 @@ namespace FutScriptFunctions.Script
         [FunctionParser("leftclick(time_ms)", "Mouse")]
         public FunctionCall leftclick(string arg_txt)
         {
-            Number rn = Number.Parse(arg_txt);
+            NumberGenerator rn = NumberGenerator.Parse(arg_txt);
             return delegate ()
             {
                 script.MouseMover.LeftButton.Click(rn.GetInt());
@@ -205,8 +205,8 @@ namespace FutScriptFunctions.Script
         public FunctionCall leftclickat(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
-            Number x = Number.Parse(args[0]);
-            Number y = Number.Parse(args[1]);
+            NumberGenerator x = NumberGenerator.Parse(args[0]);
+            NumberGenerator y = NumberGenerator.Parse(args[1]);
             return delegate ()
             {
                 script.MouseMover.MoveToAndClick(x.GetInt(),
@@ -219,7 +219,7 @@ namespace FutScriptFunctions.Script
         public FunctionCall loop(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
-            Number repeats = Number.Parse(args[0]);
+            NumberGenerator repeats = NumberGenerator.Parse(args[0]);
             string file_path = args[1];
 
             return delegate ()
@@ -236,7 +236,7 @@ namespace FutScriptFunctions.Script
         [FunctionParser("middleclick(time_ms)", "Mouse")]
         public FunctionCall middleclick(string arg_txt)
         {
-            Number rn = Number.Parse(arg_txt);
+            NumberGenerator rn = NumberGenerator.Parse(arg_txt);
             return delegate ()
             {
                 script.MouseMover.MiddleButton.Click(rn.GetInt());
@@ -248,8 +248,8 @@ namespace FutScriptFunctions.Script
         public FunctionCall move(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
-            Number X = Number.Parse(args[0]);
-            Number Y = Number.Parse(args[1]);
+            NumberGenerator X = NumberGenerator.Parse(args[0]);
+            NumberGenerator Y = NumberGenerator.Parse(args[1]);
 
             return delegate ()
             {
@@ -263,10 +263,10 @@ namespace FutScriptFunctions.Script
         public FunctionCall mover(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
-            Number X = Number.Parse(args[0]);
-            Number Y = Number.Parse(args[1]);
-            Number X2 = Number.Parse(args[2]);
-            Number Y2 = Number.Parse(args[3]);
+            NumberGenerator X = NumberGenerator.Parse(args[0]);
+            NumberGenerator Y = NumberGenerator.Parse(args[1]);
+            NumberGenerator X2 = NumberGenerator.Parse(args[2]);
+            NumberGenerator Y2 = NumberGenerator.Parse(args[3]);
 
             return delegate ()
             {
@@ -282,8 +282,8 @@ namespace FutScriptFunctions.Script
         public FunctionCall movefrom(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
-            Number x = Number.Parse(args[0]);
-            Number y = Number.Parse(args[1]);
+            NumberGenerator x = NumberGenerator.Parse(args[0]);
+            NumberGenerator y = NumberGenerator.Parse(args[1]);
 
             return delegate ()
             {
@@ -296,17 +296,17 @@ namespace FutScriptFunctions.Script
         public FunctionCall movetocolor(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
-            Number x1 = Number.Parse(args[0]);
-            Number y1 = Number.Parse(args[1]);
-            Number x2 = Number.Parse(args[2]);
-            Number y2 = Number.Parse(args[3]);
+            NumberGenerator x1 = NumberGenerator.Parse(args[0]);
+            NumberGenerator y1 = NumberGenerator.Parse(args[1]);
+            NumberGenerator x2 = NumberGenerator.Parse(args[2]);
+            NumberGenerator y2 = NumberGenerator.Parse(args[3]);
             ColorChecker color_checker = ColorRule.Parse(args[4]);
-            Number timeout = new StaticNumber(0);
+            NumberGenerator timeout = new StaticNumber(0);
             
             string file_path = null;
             if(args.Length > 5)
             {
-                timeout = Number.Parse(args[5]);
+                timeout = NumberGenerator.Parse(args[5]);
                 if(args.Length > 6)
                 {
                     file_path = args[6];
@@ -374,7 +374,7 @@ namespace FutScriptFunctions.Script
         public FunctionCall randomexec(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
-            Number percent = Number.Parse(args[0]);
+            NumberGenerator percent = NumberGenerator.Parse(args[0]);
             string file_path = args[1];
 
             return delegate ()
@@ -400,7 +400,7 @@ namespace FutScriptFunctions.Script
         [FunctionParser("rightclick(time_ms)", "Mouse")]
         public FunctionCall rightclick(string arg_txt)
         {
-            Number rn = Number.Parse(arg_txt);
+            NumberGenerator rn = NumberGenerator.Parse(arg_txt);
             return delegate ()
             {
                 script.MouseMover.RightButton.Click(rn.GetInt());
@@ -412,8 +412,8 @@ namespace FutScriptFunctions.Script
         public FunctionCall rightclickat(string arg_txt)
         {
             string[] args = arg_txt.Split(',');
-            Number x = Number.Parse(args[0]);
-            Number y = Number.Parse(args[1]);
+            NumberGenerator x = NumberGenerator.Parse(args[0]);
+            NumberGenerator y = NumberGenerator.Parse(args[1]);
             return delegate ()
             {
                 script.MouseMover.MoveToAndClick(x.GetInt(),
@@ -469,7 +469,7 @@ namespace FutScriptFunctions.Script
         [FunctionParser("wait(time_ms)")]
         public FunctionCall wait(string arg_txt)
         {
-            Number rn = Number.Parse(arg_txt);
+            NumberGenerator rn = NumberGenerator.Parse(arg_txt);
             return delegate ()
             {
                 BotHelpers.Wait(rn.GetInt());
@@ -487,7 +487,7 @@ namespace FutScriptFunctions.Script
             int y2 = Int32.Parse(args[3]);
             byte tolerance = byte.Parse(args[4]);
             int pixel_requirement = Int32.Parse(args[5]);
-            Number timeout_ms = (args.Length > 6 ? Number.Parse(args[6]) : new StaticNumber(0));
+            NumberGenerator timeout_ms = (args.Length > 6 ? NumberGenerator.Parse(args[6]) : new StaticNumber(0));
             string file_path = (args.Length > 7 ? args[7] : null);
 
             return delegate ()
@@ -512,7 +512,7 @@ namespace FutScriptFunctions.Script
             int x = Int32.Parse(args[0]);
             int y = Int32.Parse(args[1]);
             ColorChecker color_checker = ColorRule.Parse(args[2]);
-            Number timeout_ms = (args.Length > 3 ? Number.Parse(args[3]) : new StaticNumber(0));
+            NumberGenerator timeout_ms = (args.Length > 3 ? NumberGenerator.Parse(args[3]) : new StaticNumber(0));
             string file_path = (args.Length > 4 ? args[4] : null);
 
             return delegate ()

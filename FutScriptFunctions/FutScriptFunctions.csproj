@@ -60,7 +60,7 @@
     <Compile Include="Numbers\NormalDistributor.cs" />
     <Compile Include="Numbers\RandomGenerator.cs" />
     <Compile Include="Numbers\RandomRange.cs" />
-    <Compile Include="Numbers\Number.cs" />
+    <Compile Include="Numbers\NumberGenerator.cs" />
     <Compile Include="Screen\ColorDetection.cs" />
     <Compile Include="Screen\ColorRule.cs" />
     <Compile Include="Numbers\StaticNumber.cs" />
