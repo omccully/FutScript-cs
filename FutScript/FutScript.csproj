@@ -49,39 +49,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EditorForm.cs">
+    <Compile Include="RegistrySettings.cs" />
+    <Compile Include="DictionaryUserSettings.cs" />
+    <Compile Include="FileUserSettings.cs" />
+    <Compile Include="Views\EditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditorForm.Designer.cs">
+    <Compile Include="Views\EditorForm.Designer.cs">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditorFormFileMenu.cs">
+    <Compile Include="Views\EditorFormFileMenu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditorFormFindCoords.cs">
+    <Compile Include="Views\EditorFormFindCoords.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditorFormFSCodeGenerators.cs">
+    <Compile Include="Views\EditorFormFSCodeGenerators.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditorFormOptionsFile.cs">
+    <Compile Include="Views\EditorFormOptionsFile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditorFormScriptExecution.cs">
+    <Compile Include="Views\EditorFormScriptExecution.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MouseRecorderForm.cs">
+    <Compile Include="Views\MouseRecorderForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MouseRecorderForm.Designer.cs">
+    <Compile Include="Views\MouseRecorderForm.Designer.cs">
       <DependentUpon>MouseRecorderForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="EditorForm.resx">
+    <Compile Include="UserSettings.cs" />
+    <EmbeddedResource Include="Views\EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MouseRecorderForm.resx">
+    <EmbeddedResource Include="Views\MouseRecorderForm.resx">
       <DependentUpon>MouseRecorderForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

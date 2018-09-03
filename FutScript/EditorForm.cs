@@ -22,7 +22,6 @@ namespace FutScript
     {
         HotKeyManager HotKeyMngr = new HotKeyManager();
 
-        const string OptionsFilePath = "options.txt";
         const string PathsFilePath = "paths.json";
 
         Script script = new Script();
@@ -35,19 +34,6 @@ namespace FutScript
             new CursorPositionCursorLocationSetter(),
         };
 
-        Dictionary<string, ICursorLocationSetter> _CursorLocationSettersDict;
-        Dictionary<string, ICursorLocationSetter> CursorLocationSettersDict
-        {
-            get
-            {
-                if (_CursorLocationSettersDict != null) return _CursorLocationSettersDict;
-
-                return _CursorLocationSettersDict = CursorLocationSetters.ToDictionary(
-                    cls => cls.ToString(),
-                    cls => cls);
-            }
-        }
-
         Color InitialButtonColor { get; set; }
         Color InitialTextBoxColor { get; set; }
 
@@ -58,9 +44,10 @@ namespace FutScript
 
         RecordedMousePathsFile MousePathsFile = new RecordedMousePathsFile(PathsFilePath);
 
-        public EditorForm(string[] args)
+        public EditorForm(UserSettings settings, string initial_file_path = null)
         {
             InitializeComponent();
+
             ColorPic.BackColor = Color.Black;
             SavedLabel.ForeColor = Color.Green;
             KeyCodeCombo.SelectedIndex = 0;
@@ -92,9 +79,6 @@ namespace FutScript
 
             // Initialize MouseFunctionComboBox
             MouseFunctionComboBox.DataSource = CursorLocationSetters;
-
-                //Enum.GetValues(typeof(MouseActionPerformer.MovementFunctions))
-                //.OfType<MouseActionPerformer.MovementFunctions>().ToArray();
             MouseFunctionComboBox.SelectedIndex = 0;
 
             InitializeMenuStrip();
@@ -109,13 +93,7 @@ namespace FutScript
             TypingSpeedTextBox.Text = "5.2~2.3";
             StandardWaitTextBox.Text = "49~11";
             
-            LoadOptions();
-
-            if (args.Length == 1)
-            {
-                // load file from args
-                OpenFile(args[0]);
-            }
+            LoadOptions(settings);
         }
 
         void ThreadSafeInvoke(MethodInvoker mi)

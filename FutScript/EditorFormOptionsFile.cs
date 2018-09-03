@@ -4,102 +4,101 @@ using System;
 using FutScriptFunctions.Mouse;
 using System.Diagnostics;
 using FutScriptFunctions.Mouse.LocationSetBehaviors;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FutScript
 {
     public partial class EditorForm
     {
-        void LoadOptions()
+        UserSettings Settings;
+
+        Control[] _ControlsToSave;
+        Control[] ControlsToSave
         {
-            if (!File.Exists(OptionsFilePath))
+            get
             {
-                return;
+                return _ControlsToSave ?? (_ControlsToSave = new Control[]
+                {
+                    XBox, YBox, MousePollTextBox,
+                    KeyboardPollTextBox, MouseSpeedTextBox,
+                    TypingSpeedTextBox, StandardWaitTextBox,
+                    MouseMoverComboBox, MouseFunctionComboBox
+                });
             }
-            foreach (string Line in File.ReadAllLines(OptionsFilePath))
+        }
+
+        Dictionary<string, ICursorLocationSetter> _CursorLocationSettersDict;
+        Dictionary<string, ICursorLocationSetter> CursorLocationSettersDict
+        {
+            get
+            {
+                return _CursorLocationSettersDict ?? (_CursorLocationSettersDict = CursorLocationSetters.ToDictionary(
+                    cls => cls.ToString(),
+                    cls => cls));
+            }
+        }
+
+        int IndexOfCursorLocationSetter(string cls_str, int default_index=-1)
+        {
+            if (CursorLocationSettersDict.ContainsKey(cls_str))
+            {
+                ICursorLocationSetter cls = CursorLocationSettersDict[cls_str];
+                return Array.IndexOf(CursorLocationSetters, cls);
+            }
+            else
+            {
+                return default_index;
+            }
+        }
+
+        void LoadSettingForControl(UserSettings settings, Control control)
+        {
+            string saved_val = Settings.GetString(control.Name, null);
+            if (saved_val == null) return;
+
+            if (control == MouseFunctionComboBox)
+            {
+                MouseFunctionComboBox.SelectedIndex =
+                    IndexOfCursorLocationSetter(saved_val, 0);
+            }
+            else if (control == MouseMoverComboBox)
+            {
+                if (MouseMovers.ContainsKey(saved_val))
+                {
+                    MouseMover = MouseMovers[saved_val];
+                    MouseMoverComboBox.Text = saved_val;
+                }
+            }
+            else
+            {
+                control.Text = saved_val;
+            }
+        }
+
+        void LoadOptions(UserSettings settings)
+        {
+            Settings = settings;
+
+            foreach (Control control in ControlsToSave)
             {
                 try
                 {
-                    string Value = Line.Substring(Line.IndexOf('=') + 1);
-                    switch (Line.Substring(0, Line.IndexOf('=')))
-                    {
-                        case "xref":
-                            XBox.Text = Value;
-                            break;
-                        case "yref":
-                            YBox.Text = Value;
-                            break;
-                        case "mpoll":
-                            MousePollTextBox.Text = Value;
-                            break;
-                        case "kpoll":
-                            KeyboardPollTextBox.Text = Value;
-                            break;
-                        case "mspeed":
-                            MouseSpeedTextBox.Text = Value;
-                            break;
-                        case "tspeed":
-                            TypingSpeedTextBox.Text = Value;
-                            break;
-                        case "wait":
-                            StandardWaitTextBox.Text = Value;
-                            break;
-                        case "mousemover":
-                            if(MouseMovers.ContainsKey(Value))
-                            {
-                                MouseMover = MouseMovers[Value];
-                                MouseMoverComboBox.Text = Value;
-                            }
-                            break;
-                        case "mousefunc":
-                            try
-                            {
-                                int index;
-                                if(CursorLocationSettersDict.ContainsKey(Value))
-                                {
-                                    ICursorLocationSetter cls = CursorLocationSettersDict[Value];
-                                    index = Array.IndexOf(CursorLocationSetters, cls);
-                                }
-                                else
-                                {
-                                    index = 0;
-                                }
-                                
-                                // if move_func not found in enum somehow, use 0
-                                MouseFunctionComboBox.SelectedIndex = index;
-                            }
-                            catch(ArgumentException) // Enum.Parse fails
-                            {
-                                MessageBox.Show("The options file was corrupted. The mouse func option failed to load.");
-                            }
-
-                            break;
-                       
-                    }
+                    LoadSettingForControl(settings, control);
                 }
-                catch { }
+                catch
+                {
+                    MessageBox.Show("Could not restore setting for " + control.Name);
+                }
             }
         }
 
         void SaveOptions()
         {
-            string[] Lines = new string[]
-                {
-                    "xref=" + XBox.Text,
-                    "yref=" + YBox.Text,
-                    "mpoll=" + MousePollTextBox.Text,
-                    "kpoll=" + KeyboardPollTextBox.Text,
-                    "mspeed=" + MouseSpeedTextBox.Text,
-                    "tspeed=" + TypingSpeedTextBox.Text,
-                    "wait=" + StandardWaitTextBox.Text,
-                    "mousemover=" + MouseMoverComboBox.Text,
-                    "mousefunc=" + MouseFunctionComboBox.Text
-                };
-            string OptionsDir = Path.GetDirectoryName(Path.GetFullPath(OptionsFilePath));
-            if (!Directory.Exists(OptionsDir))
+            foreach(Control control in ControlsToSave)
             {
-                Directory.CreateDirectory(OptionsDir);
+                Settings.SetValue(control.Name, control.Text);
             }
-            File.WriteAllLines(OptionsFilePath, Lines);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
