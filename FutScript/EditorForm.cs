@@ -161,11 +161,14 @@ namespace FutScript
         {
             try
             {
+                // get the color at the Find point
                 Point ReferencePoint = GetReferencePoint();
                 Point p = new Point(ReferencePoint.X + Int32.Parse(XFind.Text),
                     ReferencePoint.Y + Int32.Parse(YFind.Text));
 
                 Color pix = ScreenCapture.GetColorOfPx(p);
+
+                // display color to the user
                 ColorBox.Text = pix.Name.Substring(2);
                 ColorPic.BackColor = pix;
             }
