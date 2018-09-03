@@ -45,7 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mouse\AbsoluteCursorLocator.cs" />
+    <Compile Include="Mouse\ICursorLocator.cs" />
     <Compile Include="Mouse\JaggedMouseMover.cs" />
+    <Compile Include="Mouse\LocationSetBehaviors\CursorPositionCursorLocationSetter.cs" />
+    <Compile Include="Mouse\LocationSetBehaviors\ICursorLocationSetter.cs" />
+    <Compile Include="Mouse\LocationSetBehaviors\SetCursorPosCursorLocationSetter.cs" />
+    <Compile Include="Mouse\LocationSetBehaviors\MouseEventCursorLocationSetter.cs" />
     <Compile Include="Mouse\MouseHook.cs" />
     <Compile Include="Mouse\Recorded\MousePathRecorder.cs" />
     <Compile Include="Mouse\Recorded\RecordedMousePaths.cs" />

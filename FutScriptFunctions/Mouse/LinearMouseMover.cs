@@ -14,7 +14,7 @@ namespace FutScriptFunctions.Mouse
         /// <param name="dx">X coordinate relative to current cursor position</param>
         /// <param name="dy">Y coordinate relative to current cursor position</param>
         /// <param name="speed">Speed in pixels per second</param>
-        public override void MoveFrom(int dx, int dy, double speed = SPEED_DEFAULT)
+        public override void MoveFrom(int dx, int dy, double speed = SpeedDefault)
         {
             Point current_location = Location;
             MoveTo(current_location.X + dx, current_location.Y + dy, speed);
@@ -26,7 +26,7 @@ namespace FutScriptFunctions.Mouse
         /// <param name="x">Absolute X coordinate to move to</param>
         /// <param name="y">Absolute Y coordinate to move to</param>
         /// <param name="speed">Speed in pixels per second</param>
-        public override void MoveTo(int x, int y, double speed = SPEED_DEFAULT)
+        public override void MoveTo(int x, int y, double speed = SpeedDefault)
         {
             // cursor movement functions use relative points
             Point relative = User32.AbsoluteToRelativePoint(x, y);

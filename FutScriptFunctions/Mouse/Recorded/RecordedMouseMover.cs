@@ -22,18 +22,18 @@ namespace FutScriptFunctions.Mouse.Recorded
             this.BackupMethod = BackupMethod;
         }
 
-        public override void MoveTo(int x, int y, double speed = SPEED_DEFAULT)
+        public override void MoveTo(int x, int y, double speed = SpeedDefault)
         {
             MoveToAndClick(x, y, null, speed); // move, but don't click
         }
 
-        public override void MoveFrom(int dx, int dy, double speed = SPEED_DEFAULT)
+        public override void MoveFrom(int dx, int dy, double speed = SpeedDefault)
         {
             Point current_location = Location;
             MoveTo(current_location.X + dx, current_location.Y + dy, speed);
         }
 
-        public override void MoveToAndClick(int x, int y, Button ButtonToClick, double speed = SPEED_DEFAULT)
+        public override void MoveToAndClick(int x, int y, Button ButtonToClick, double speed = SpeedDefault)
         {
             Point destination = new Point(x, y);
             Point current_location = new Point();
@@ -62,7 +62,7 @@ namespace FutScriptFunctions.Mouse.Recorded
             }
         }
 
-        bool MoveCursorUsingPath(SerializableCursorPath path, int dx, int dy, double speed = SPEED_DEFAULT, Button ButtonToClick=null,
+        bool MoveCursorUsingPath(SerializableCursorPath path, int dx, int dy, double speed = SpeedDefault, Button ButtonToClick=null,
             Rectangle? OnlyClickWithin = null)
         {
             // if currently on same axis as destination, then use 1.0 for the scale
@@ -76,7 +76,7 @@ namespace FutScriptFunctions.Mouse.Recorded
             double path_speed = (path_displacement_magnitude / path.MouseDownTime) * 1000;
             double scale_speed = speed / path_speed;*/
 
-            double scale_speed = speed / SPEED_DEFAULT;
+            double scale_speed = speed / SpeedDefault;
 
             return FollowPath(path.Path, scale_x, scale_y, scale_speed,
                 path.MouseDownTime, ButtonToClick);

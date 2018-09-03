@@ -7,66 +7,32 @@ using System.Collections.Generic;
 using FutScriptFunctions.Win32API;
 using FutScriptFunctions.Numbers;
 using FutScriptFunctions.Screen;
+using FutScriptFunctions.Mouse.LocationSetBehaviors;
 
 namespace FutScriptFunctions.Mouse
 {
     public class MouseActionPerformer
     {
-        public enum MovementFunctions
-        {
-            mouse_event,
-            CursorPosition,
-            SetCursorPos
-        }
+        public const double SpeedDefault = 400.0; // pixels/second
+        public const int PollingRateDefault = 125;
 
-        protected delegate void MovementFunction(int x, int y);
-        protected MovementFunction JumpPosition { get; set; }
-        protected MovementFunction SetPosition { get; set; }
-
-        MovementFunctions _DefaultMovementFunction;
-        public MovementFunctions DefaultMovementFunction
-        {
-            get
-            {
-                return _DefaultMovementFunction;
-            }
-            set
-            {
-                _DefaultMovementFunction = value;
-                switch(value)
-                {
-                    case MovementFunctions.mouse_event:
-                        JumpPosition = JumpPositionRelativeUsingMouseEvent;
-                        SetPosition = SetPositionUsingMouseEvent;
-                        break;
-                    case MovementFunctions.SetCursorPos:
-                        JumpPosition = JumpPositionRelativeUsingSetCursorPos;
-                        SetPosition = SetPositionUsingSetCursorPos;
-                        break;
-                    case MovementFunctions.CursorPosition:
-                    default:
-                        JumpPosition = JumpPositionRelativeUsingCursorPosition;
-                        SetPosition = SetPositionUsingCursorPosition;
-                        break;
-                }
-            }
-        }
-
-        public const double SPEED_DEFAULT = 400.0; // pixels/second
-        public const int POLLING_RATE_DEFAULT = 125;
+        public ICursorLocationSetter CursorLocationSetter;
+        
         public Button LeftButton;
         public Button RightButton;
         public Button MiddleButton;
 
-        public MouseActionPerformer(int PollingRate = POLLING_RATE_DEFAULT)
+        public MouseActionPerformer(int PollingRate = PollingRateDefault, ICursorLocationSetter cursor_loc_setter=null)
         {
             this.PollingRate = PollingRate; // this also sets PollingPeriod
             this.Polled = true;
-            DefaultMovementFunction = MovementFunctions.mouse_event;
 
-            LeftButton = new Button(0x0002, 0x0004, this);
-            RightButton = new Button(0x0008, 0x0010, this);
-            MiddleButton = new Button(0x0020, 0x0040, this);
+            this.CursorLocationSetter = 
+                cursor_loc_setter == null ? new MouseEventCursorLocationSetter() : cursor_loc_setter;
+
+            LeftButton = new Button(Button.LeftDownCode, Button.LeftUpCode, this);
+            RightButton = new Button(Button.RightDownCode, Button.RightUpCode, this);
+            MiddleButton = new Button(Button.MiddleDownCode, Button.MiddleUpCode, this);
 
         }
 
@@ -163,60 +129,13 @@ namespace FutScriptFunctions.Mouse
             }
         }
 
-
-        #region Raw Cursor movement methods
-        // using Cursor.Position
-        void JumpPositionRelativeUsingCursorPosition(int dx, int dy)
-        {
-            Point start = Cursor.Position;
-            Cursor.Position = new Point(start.X + dx, start.Y + dy);
-        }
-
-        // using Cursor.Position
-        void SetPositionUsingCursorPosition(int x, int y)
-        {
-            Cursor.Position = User32.AbsoluteToRelativePoint(x, y);
-        }
-
-        // using mouse_event
-        /// <summary>
-        /// Requires mouse acceleration to be off
-        /// </summary>
-        /// <param name="dx"></param>
-        /// <param name="dy"></param>
-        void JumpPositionRelativeUsingMouseEvent(int dx, int dy)
-        {
-            User32.mouse_event(0x0001, dx, dy, 0, 0);
-        }
-
-        // using mouse_event
-        void SetPositionUsingMouseEvent(int x, int y)
-        {
-            Point loc = Location;
-            JumpPositionRelativeUsingMouseEvent(x - loc.X, y - loc.Y);
-        }
-        
-        void JumpPositionRelativeUsingSetCursorPos(int dx, int dy)
-        {
-            Point relative_start = Cursor.Position;
-            User32.SetCursorPos(relative_start.X + dx, relative_start.Y + dy);
-
-        }
-
-        void SetPositionUsingSetCursorPos(int x, int y)
-        {
-            Point relative = User32.AbsoluteToRelativePoint(x, y);
-            User32.SetCursorPos(relative.X, relative.Y);
-        }
-        #endregion
-
         /// <summary>
         /// Moves mouse cursor to its destination relative to the starting cursor position
         /// </summary>
         /// <param name="dx">X coordinate relative to current cursor position</param>
         /// <param name="dy">Y coordinate relative to current cursor position</param>
         /// <param name="speed">Not implemented by base method</param>
-        public virtual void MoveFrom(int dx, int dy, double speed = SPEED_DEFAULT)
+        public virtual void MoveFrom(int dx, int dy, double speed = SpeedDefault)
         {
             JumpPosition(dx, dy);
         }
@@ -227,12 +146,12 @@ namespace FutScriptFunctions.Mouse
         /// <param name="x">Absolute X coordinate to move to</param>
         /// <param name="y">Absolute Y coordinate to move to</param>
         /// <param name="speed">Not implemented by base method</param>
-        public virtual void MoveTo(int x, int y, double speed = SPEED_DEFAULT)
+        public virtual void MoveTo(int x, int y, double speed = SpeedDefault)
         {
             SetPosition(x, y);
         }
 
-        public virtual void MoveToAndClick(int x, int y, Button ButtonToClick, double speed = SPEED_DEFAULT)
+        public virtual void MoveToAndClick(int x, int y, Button ButtonToClick, double speed = SpeedDefault)
         {
             MoveTo(x, y, speed);
             ButtonToClick?.Click();
@@ -248,7 +167,7 @@ namespace FutScriptFunctions.Mouse
         /// <param name="x2">Right edge X coordinate</param>
         /// <param name="y2">Bottom edge Y coordinate</param>
         /// <param name="speed">Cursor speed</param>
-        public void MoveTo(int x1, int y1, int x2, int y2, double speed = SPEED_DEFAULT)
+        public void MoveTo(int x1, int y1, int x2, int y2, double speed = SpeedDefault)
         {
             MoveTo(Rectangle.FromLTRB(x1, y1, x2, y2), speed);
         }
@@ -259,7 +178,7 @@ namespace FutScriptFunctions.Mouse
         /// <param name="a">Top left point</param>
         /// <param name="b">Bottom right point</param>
         /// <param name="speed">Cursor speed</param>
-        public void MoveTo(Point a, Point b, double speed = SPEED_DEFAULT)
+        public void MoveTo(Point a, Point b, double speed = SpeedDefault)
         {
             MoveTo(Rectangle.FromLTRB(a.X, a.Y, b.X, b.Y), speed);
         }
@@ -269,7 +188,7 @@ namespace FutScriptFunctions.Mouse
         /// </summary>
         /// <param name="rect">Rectangle</param>
         /// <param name="speed">Cursor speed</param>
-        public void MoveTo(Rectangle rect, double speed = SPEED_DEFAULT)
+        public void MoveTo(Rectangle rect, double speed = SpeedDefault)
         {
             // keep looping until the cursor is within range
             while(!rect.Contains(Location))
@@ -290,7 +209,7 @@ namespace FutScriptFunctions.Mouse
         /// <param name="speed">Cursor move speed</param>
         /// <param name="comparer">A color comparer</param>
         /// <returns>True if success, false if timed out</returns>
-        public bool MoveToColor(Rectangle screen_area, ColorChecker checker, int timeout_ms = 0, double speed = SPEED_DEFAULT)
+        public bool MoveToColor(Rectangle screen_area, ColorChecker checker, int timeout_ms = 0, double speed = SpeedDefault)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -309,10 +228,22 @@ namespace FutScriptFunctions.Mouse
             return true;
         }
 
-       
+        protected void JumpPosition(int dx, int dy)
+        {
+            CursorLocationSetter.JumpPosition(dx, dy);
+        }
+
+        protected void SetPosition(int x, int y)
+        {
+            CursorLocationSetter.SetPosition(x, y);
+        }
 
         public class Button
         {
+            public const int LeftDownCode = 0x0002, LeftUpCode = 0x0004;
+            public const int RightDownCode = 0x0008, RightUpCode = 0x0010;
+            public const int MiddleDownCode = 0x0020, MiddleUpCode = 0x0040;
+
             readonly int DownCode, UpCode;
             readonly MouseActionPerformer parent;
 

@@ -3,6 +3,7 @@ using System.IO;
 using System;
 using FutScriptFunctions.Mouse;
 using System.Diagnostics;
+using FutScriptFunctions.Mouse.LocationSetBehaviors;
 
 namespace FutScript
 {
@@ -50,15 +51,20 @@ namespace FutScript
                             }
                             break;
                         case "mousefunc":
-                            Type move_func_type = typeof(MouseActionPerformer.MovementFunctions);
-
                             try
                             {
-                                MouseActionPerformer.MovementFunctions move_func = (MouseActionPerformer.MovementFunctions)Enum.Parse(move_func_type, Value);
-                                int index = Array.IndexOf(Enum.GetValues(move_func_type), move_func);
-
+                                int index;
+                                if(CursorLocationSettersDict.ContainsKey(Value))
+                                {
+                                    ICursorLocationSetter cls = CursorLocationSettersDict[Value];
+                                    index = Array.IndexOf(CursorLocationSetters, cls);
+                                }
+                                else
+                                {
+                                    index = 0;
+                                }
+                                
                                 // if move_func not found in enum somehow, use 0
-                                Debug.Assert(index != -1); // 
                                 MouseFunctionComboBox.SelectedIndex = index;
                             }
                             catch(ArgumentException) // Enum.Parse fails

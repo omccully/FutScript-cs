@@ -14,6 +14,7 @@ using FutScriptFunctions.Screen;
 using FutScriptFunctions.Mouse;
 using FutScriptFunctions.Keyboard;
 using FutScriptFunctions.Mouse.Recorded;
+using FutScriptFunctions.Mouse.LocationSetBehaviors;
 
 namespace FutScript
 {
@@ -27,12 +28,31 @@ namespace FutScript
         Script script = new Script();
         MouseActionPerformer MouseMover = new MouseActionPerformer();
         Dictionary<string, MouseActionPerformer> MouseMovers;
+        ICursorLocationSetter[] CursorLocationSetters = new ICursorLocationSetter[]
+        {
+            new MouseEventCursorLocationSetter(),
+            new SetCursorPosCursorLocationSetter(),
+            new CursorPositionCursorLocationSetter(),
+        };
+
+        Dictionary<string, ICursorLocationSetter> _CursorLocationSettersDict;
+        Dictionary<string, ICursorLocationSetter> CursorLocationSettersDict
+        {
+            get
+            {
+                if (_CursorLocationSettersDict != null) return _CursorLocationSettersDict;
+
+                return _CursorLocationSettersDict = CursorLocationSetters.ToDictionary(
+                    cls => cls.ToString(),
+                    cls => cls);
+            }
+        }
 
         Color InitialButtonColor { get; set; }
         Color InitialTextBoxColor { get; set; }
 
-        Dictionary<string, MouseActionPerformer.MovementFunctions> MouseFunctions = 
-            new Dictionary<string, MouseActionPerformer.MovementFunctions>();
+        //Dictionary<string, ICursorLocationSetter> MouseFunctions = 
+           // new Dictionary<string, ICursorLocationSetter>();
 
         Thread ParentThread { get; set; }
 
@@ -71,8 +91,10 @@ namespace FutScript
             MouseMoverComboBox.SelectedIndex = 0;
 
             // Initialize MouseFunctionComboBox
-            MouseFunctionComboBox.DataSource = Enum.GetValues(typeof(MouseActionPerformer.MovementFunctions))
-                .OfType<MouseActionPerformer.MovementFunctions>().ToArray();
+            MouseFunctionComboBox.DataSource = CursorLocationSetters;
+
+                //Enum.GetValues(typeof(MouseActionPerformer.MovementFunctions))
+                //.OfType<MouseActionPerformer.MovementFunctions>().ToArray();
             MouseFunctionComboBox.SelectedIndex = 0;
 
             InitializeMenuStrip();
@@ -231,13 +253,13 @@ namespace FutScript
             // set all mouse movers' movement functions to the new selected one.
             if (MouseFunctionComboBox.SelectedValue != null)
             {
-                MouseActionPerformer.MovementFunctions move_func =
-                (MouseActionPerformer.MovementFunctions)MouseFunctionComboBox.SelectedValue;
+                ICursorLocationSetter move_func =
+                    (ICursorLocationSetter)MouseFunctionComboBox.SelectedValue;
 
                 // apply this mouse_func to all of the mouse movers
                 foreach (MouseActionPerformer mouse_mover in MouseMovers.Values)
                 {
-                    mouse_mover.DefaultMovementFunction = move_func;
+                    mouse_mover.CursorLocationSetter = move_func;
                 }
             }
             else

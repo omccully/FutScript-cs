@@ -13,7 +13,7 @@ namespace FutScriptFunctions.Mouse
 {
     public class JaggedMouseMover : MouseActionPerformer
     {
-        public override void MoveTo(int x, int y, double speed = SPEED_DEFAULT)
+        public override void MoveTo(int x, int y, double speed = SpeedDefault)
         {
             const int MEAN = 100;
             const int DEV = 50;
@@ -59,7 +59,7 @@ namespace FutScriptFunctions.Mouse
             }
         }
 
-        public override void MoveFrom(int dx, int dy, double speed = SPEED_DEFAULT)
+        public override void MoveFrom(int dx, int dy, double speed = SpeedDefault)
         {
             Point current_location = Location;
             MoveTo(current_location.X + dx, current_location.Y + dy, speed);
