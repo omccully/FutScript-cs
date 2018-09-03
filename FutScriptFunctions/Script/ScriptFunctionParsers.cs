@@ -29,11 +29,18 @@ namespace FutScriptFunctions.Script
 
         Script script { get; set; }
 
-        public FunctionDefinitions(Script script)
+        ScreenColorDetector screen_color_detector;
+        ScreenCapturerBase screen_capturer;
+
+        public FunctionDefinitions(Script script, ScreenCapturerBase screen_capturer=null)
         {
             // the script object contains additional parameters for the script
             // that are needed for script execution
             this.script = script;
+
+            this.screen_capturer = screen_capturer ?? new ScreenCapturer();
+
+            this.screen_color_detector = new ScreenColorDetector(this.screen_capturer);
         }
 
         Keys ParseKey(string KeyText)
@@ -117,7 +124,7 @@ namespace FutScriptFunctions.Script
 
             return delegate ()
             {
-                if(color_checker(ScreenCapture.GetColorOfPx(X + script.XRef, 
+                if(color_checker(screen_capturer.GetColorOfPx(X + script.XRef, 
                     Y + script.YRef)))
                 {
                     return ExecFileBreakable(file_path);
@@ -143,7 +150,7 @@ namespace FutScriptFunctions.Script
             {
                 Rectangle screen_area = Rectangle.FromLTRB(x1 + script.XRef, 
                     script.YRef + y1, script.XRef + x2, script.YRef + y2);
-                if (ColorDetection.ScreenAreaIncludesColor(screen_area, color_checker))
+                if (screen_color_detector.ScreenAreaIncludesColor(screen_area, color_checker))
                 {
                     return ExecFileBreakable(file_path);
                 }
@@ -428,7 +435,7 @@ namespace FutScriptFunctions.Script
         {
             return delegate ()
             {
-                Bitmap bmp = ScreenCapture.CaptureAllScreens();
+                Bitmap bmp = screen_capturer.CaptureAllScreens();
                 bmp.Save(arg_txt);
                 bmp.Dispose();
                 return FunctionResult.Continue;
@@ -440,7 +447,7 @@ namespace FutScriptFunctions.Script
         {
             return delegate ()
             {
-                Bitmap bmp = ScreenCapture.CaptureForegroundWindow();
+                Bitmap bmp = ScreenCapturer.CaptureForegroundWindow();
                 bmp.Save(arg_txt);
                 bmp.Dispose();
                 return FunctionResult.Continue;
@@ -492,7 +499,7 @@ namespace FutScriptFunctions.Script
 
             return delegate ()
             {
-               if(!ColorDetection.WaitForAreaChange(Rectangle.FromLTRB(
+               if(!screen_color_detector.WaitForAreaChange(Rectangle.FromLTRB(
                    x1 + script.XRef, y1 + script.YRef,
                    x2 + script.XRef, y2 + script.YRef
                    ), pixel_requirement, timeout_ms.GetInt(),
@@ -517,7 +524,7 @@ namespace FutScriptFunctions.Script
 
             return delegate ()
             {
-                if(!ColorDetection.WaitForPx(new Point(x + script.XRef, y + script.YRef),
+                if(!screen_color_detector.WaitForPx(new Point(x + script.XRef, y + script.YRef),
                     color_checker, timeout_ms.GetInt()))
                 {
                     // timed out

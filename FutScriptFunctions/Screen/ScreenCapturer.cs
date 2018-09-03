@@ -1,64 +1,16 @@
-﻿using System;
+﻿using FutScriptFunctions.Win32API;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
-using FutScriptFunctions.Win32API;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FutScriptFunctions.Screen
 {
-    public static class ScreenCapture
+    public class ScreenCapturer : ScreenCapturerBase
     {
-        #region GetColorOfPx
-        /// <summary>
-        /// Gets the color of a single pixel on the screen
-        /// </summary>
-        /// <param name="x">X coordinate of a pixel</param>
-        /// <param name="y">Y coordinate of a pixel</param>
-        /// <returns>Color of the specified pixel</returns>
-        public static Color GetColorOfPx(int x, int y)
-        {
-            Bitmap bmp = CaptureScreenArea(x, y, 1, 1);
-            Color answer = bmp.GetPixel(0, 0);
-            bmp.Dispose();
-            return answer;
-        }
-
-        /// <summary>
-        /// Gets the color of a single pixel on the screen
-        /// </summary>
-        /// <param name="p">Coordinates of a pixel</param>
-        /// <returns>olor of the specified pixel</returns>
-        public static Color GetColorOfPx(Point p)
-        {
-            return GetColorOfPx(p.X, p.Y);
-        }
-        #endregion
-
-        #region CaptureScreenArea
-        /// <summary>
-        /// Captures a screenshot of the given screen area
-        /// </summary>
-        /// <param name="TopLeft"></param>
-        /// <param name="BottomRight"></param>
-        /// <returns></returns>
-        public static Bitmap CaptureScreenArea(Point TopLeft, Point BottomRight)
-        {
-            return CaptureScreenArea(TopLeft.X, TopLeft.X, 
-                (BottomRight.X - TopLeft.X) + 1, (BottomRight.Y - TopLeft.Y) + 1);
-        }
-
-        public static Bitmap CaptureScreenArea(Rectangle rect)
-        {
-            return CaptureScreenArea(rect.X, rect.Y, rect.Width, rect.Height);
-        }
-
-        /// <summary>
-        /// Captures a screenshot of the given screen area
-        /// </summary>
-        /// <param name="X"></param>
-        /// <param name="Y"></param>
-        /// <param name="Width"></param>
-        /// <param name="Height"></param>
-        /// <returns>A screenshot of the given screen area</returns>
-        public static Bitmap CaptureScreenArea(int X, int Y, int Width, int Height)
+        public override Bitmap CaptureScreenArea(int X, int Y, int Width, int Height)
         {
             IntPtr hdcSrc = GDI32.CreateDC("DISPLAY", null, null, IntPtr.Zero);
             IntPtr hdcDest = GDI32.CreateCompatibleDC(hdcSrc);
@@ -72,9 +24,25 @@ namespace FutScriptFunctions.Screen
             GDI32.DeleteObject(hBitmap);
             return bmpret;
         }
-        #endregion
+
+        public override Color GetColorOfPx(int x, int y)
+        {
+            Bitmap bmp = CaptureScreenArea(x, y, 1, 1);
+            Color answer = bmp.GetPixel(0, 0);
+            bmp.Dispose();
+            return answer;
+        }
 
         /// <summary>
+        /// Captures a screenshot of all screens
+        /// </summary>
+        /// <returns>A screenshot of all screens</returns>
+        public override Bitmap CaptureAllScreens()
+        {
+            return CaptureScreenArea(0, 0, User32.ScreenWidth, User32.ScreenHeight);
+        }
+
+        // <summary>
         /// Captures a screenshot of a given window
         /// </summary>
         /// <param name="handle">A handle to a window</param>
@@ -96,15 +64,6 @@ namespace FutScriptFunctions.Screen
             Bitmap bmp = Bitmap.FromHbitmap(hBitmap);
             GDI32.DeleteObject(hBitmap);
             return bmp;
-        }
-
-        /// <summary>
-        /// Captures a screenshot of all screens
-        /// </summary>
-        /// <returns>A screenshot of all screens</returns>
-        public static Bitmap CaptureAllScreens()
-        {
-            return CaptureScreenArea(0, 0, User32.ScreenWidth, User32.ScreenHeight);
         }
 
         /// <summary>

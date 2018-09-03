@@ -22,18 +22,21 @@ namespace FutScriptFunctions.Mouse
         public Button RightButton;
         public Button MiddleButton;
 
-        public MouseActionPerformer(int PollingRate = PollingRateDefault, ICursorLocationSetter cursor_loc_setter=null)
+        public ScreenColorDetector ScreenColorDetector { get; set; }
+
+        public MouseActionPerformer(int PollingRate = PollingRateDefault, 
+            ICursorLocationSetter cursor_loc_setter=null,
+            ScreenColorDetector screen_color_detector=null)
         {
             this.PollingRate = PollingRate; // this also sets PollingPeriod
             this.Polled = true;
 
-            this.CursorLocationSetter = 
-                cursor_loc_setter == null ? new MouseEventCursorLocationSetter() : cursor_loc_setter;
+            this.CursorLocationSetter = cursor_loc_setter ?? new MouseEventCursorLocationSetter();
+            this.ScreenColorDetector = screen_color_detector ?? new ScreenColorDetector();
 
             LeftButton = new Button(Button.LeftDownCode, Button.LeftUpCode, this);
             RightButton = new Button(Button.RightDownCode, Button.RightUpCode, this);
             MiddleButton = new Button(Button.MiddleDownCode, Button.MiddleUpCode, this);
-
         }
 
         #region Polling
@@ -215,7 +218,7 @@ namespace FutScriptFunctions.Mouse
             stopwatch.Start();
 
             Point p = new Point(0, 0);
-            while ((p = ColorDetection.LocationOfColorWithinScreenArea(
+            while ((p = ScreenColorDetector.LocationOfColorWithinScreenArea(
                 screen_area, checker)).X == -1)
             {
                 if (timeout_ms != 0 && stopwatch.ElapsedMilliseconds >= timeout_ms)

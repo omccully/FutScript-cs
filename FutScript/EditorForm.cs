@@ -135,6 +135,8 @@ namespace FutScript
             }
         }
 
+        ScreenCapturer screen_capturer = new ScreenCapturer();
+
         private void ColorBut_Click(object sender, EventArgs e)
         {
             try
@@ -144,7 +146,7 @@ namespace FutScript
                 Point p = new Point(ReferencePoint.X + Int32.Parse(XFind.Text),
                     ReferencePoint.Y + Int32.Parse(YFind.Text));
 
-                Color pix = ScreenCapture.GetColorOfPx(p);
+                Color pix = screen_capturer.GetColorOfPx(p);
 
                 // display color to the user
                 ColorBox.Text = pix.Name.Substring(2);
