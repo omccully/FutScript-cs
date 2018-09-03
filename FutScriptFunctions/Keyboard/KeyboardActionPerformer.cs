@@ -277,7 +277,7 @@ namespace FutScriptFunctions.Keyboard
                 short VkKeyScanResult = User32.VkKeyScan(ch);
                 if (VkKeyScanResult == -1)
                 {
-                    throw new Exception("Invalid character key");
+                    throw new ArgumentException("Invalid character key");
                 }
                 // low order byte is key code, high order byte includes shift state
                 return new KeyData((byte)VkKeyScanResult, (byte)(VkKeyScanResult >> 8));

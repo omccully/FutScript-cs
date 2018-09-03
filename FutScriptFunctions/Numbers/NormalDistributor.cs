@@ -70,7 +70,7 @@ namespace FutScriptFunctions.Numbers
                 }
                 
             }
-            throw new ArgumentException("NormalDistributor literal text not in correct format.");
+            throw new FormatException("NormalDistributor literal text not in correct format.");
         }
 
         public static double NormalDistributionReal(double mean, double std_deviation)

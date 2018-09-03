@@ -282,7 +282,7 @@ namespace FutScriptFunctions.Mouse.Recorded
         public int GetMouseUpTime()
         {
             int len = Path.Length;
-            if (len == 0) throw new Exception("No points in path");
+            if (len == 0) throw new InvalidOperationException("No points in path");
 
             // [0] element is the relative time
             return Path[len - 1][0];

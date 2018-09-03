@@ -33,7 +33,7 @@ namespace FutScriptFunctions.Numbers
                 }
             }
 
-            throw new Exception($"Invalid Number literal '{text}'");
+            throw new FormatException($"Invalid Number literal '{text}'");
         }
     }
 }

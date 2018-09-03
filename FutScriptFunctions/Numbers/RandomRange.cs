@@ -38,7 +38,7 @@ namespace FutScriptFunctions.Numbers
                 double max = double.Parse(m.Groups[2].Value);
                 return new RandomRange(min, max);
             }
-            throw new ArgumentException("RandomRange literal text not in correct format.");
+            throw new FormatException("RandomRange literal text not in correct format.");
         }
 
         /// <summary>

@@ -78,8 +78,8 @@ namespace FutScriptFunctions.Screen
         public static ColorChecker Parse(string code)
         {
             Match match = new Regex("(!?)([A-Fa-f0-9]{6})(~[0-9]+)?").Match(code);
-            if (!match.Success) throw new Exception($"Invalid ColorRule literal '{code}'");
-
+            if (!match.Success) throw new FormatException($"Invalid ColorRule literal '{code}'");
+            
             bool not_operator = match.Groups[1].Value == "!";
             Color color = HexToColor(match.Groups[2].Value);
             byte tolerance = String.IsNullOrEmpty(match.Groups[4].Value) ?

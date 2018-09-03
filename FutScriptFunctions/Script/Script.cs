@@ -184,7 +184,7 @@ namespace FutScriptFunctions.Script
             }
             else
             {
-                throw new Exception("A script is already running.");
+                throw new InvalidOperationException("A script is already running.");
             }
         }
 

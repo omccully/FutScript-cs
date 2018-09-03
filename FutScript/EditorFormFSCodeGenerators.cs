@@ -91,10 +91,10 @@ namespace FutScript
         void SelectTextInParenthesis(TextBoxBase text_box, int start_index = 0)
         {
             int left_index = text_box.Text.IndexOf('(', start_index);
-            if (left_index == -1) throw new Exception("Left parenthesis not found. ");
+            if (left_index == -1) throw new FormatException("Left parenthesis not found. ");
 
             int right_index = text_box.Text.IndexOf(')', start_index);
-            if (right_index == -1) throw new Exception("Right parenthesis not found. ");
+            if (right_index == -1) throw new FormatException("Right parenthesis not found. ");
 
             text_box.SelectionStart = left_index + 1;
             text_box.SelectionLength = right_index - left_index - 1;
