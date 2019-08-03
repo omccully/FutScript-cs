@@ -34,9 +34,9 @@ namespace FutScriptFunctions.Screen
             // grouped together on a computer screen.
             // Be careful to ensure that all coordinates are checked (do proper testing on this).
 
-            for (int y = 0; y <= bmp.Height; y++)
+            for (int y = 0; y < bmp.Height; y++)
             {
-                for (int x = 0; x <= bmp.Width; x++)
+                for (int x = 0; x < bmp.Width; x++)
                 {
                     if (checker(bmp.GetPixel(x, y)))
                     {
